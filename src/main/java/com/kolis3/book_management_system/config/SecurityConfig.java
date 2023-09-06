@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.kolis3.book_management_system.security.handler.CustomAccessDeniedHandler;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -43,31 +45,34 @@ public class SecurityConfig{
     
       log.info("filter chain--------------------------------");
 
-      //http.formLogin(Customizer.withDefaults());
-
       // /login 경로 로그인 페이지 띄우기
       http.formLogin(config -> {
         config.loginPage("/member/signin");
       });
 
-    //   http.exceptionHandling(
-    //     config -> config.accessDeniedHandler(new CustomAccessDeniedHandler())
-    //   );
+      log.info("로그인 페이지 띄우기----------------");
 
-    //   http.rememberMe(config -> {
-    //     config.tokenRepository(persistentTokenRepository());
-    //     config.tokenValiditySeconds(60*60*24*7);
-    //   });
+      // 권한 체크
+      http.exceptionHandling(
+        config -> config.accessDeniedHandler(new CustomAccessDeniedHandler())
+      );
 
-    //   http.csrf(config -> {
-    //     config.disable();
-    //   });
+      log.info("권한 체큰--------2222222--------");
 
-    //   http.oauth2Login(config -> {
-    //     config.loginPage("/member/signin");
-    //     config.successHandler(new CustomOAuthSuccessHandler());
+      // 재접속시 로그인 유지
+      http.rememberMe(config -> {
+        config.tokenRepository(persistentTokenRepository());
+        config.tokenValiditySeconds(60*60*24*7);
+      });
 
-    //   });
+      log.info("로그인 유지------333333----------");
+
+      //일단 CSRF 생략한다.
+      http.csrf(config -> {
+        config.disable();
+      });
+
+      log.info(" CSRF 생략한다.==============");
 
       return http.build();
     }
