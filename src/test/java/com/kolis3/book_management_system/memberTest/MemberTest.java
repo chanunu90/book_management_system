@@ -10,13 +10,13 @@ import lombok.extern.log4j.Log4j2;
 
 @SpringBootTest
 @Log4j2
-class BookManagementSystemApplicationTests {
+public class MemberTest {
 
     @Autowired
     private MemberMapper memberMapper;
 
 	@Test
-	void contextLoads() {
+	public void timeTest() {
 
         log.info(memberMapper.time());
 

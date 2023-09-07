@@ -5,10 +5,14 @@
 
 <mapper namespace="com.kolis3.book_management_system.mappers.MemberMapper">
 
+  <select id="time">
+    select now()
+  </select>
+
   <resultMap id="memberMap" type="com.kolis3.book_management_system.dto.MemberReadDTO">
-    <id property="email" column="email"/>
-    <result property="mname" column="mname"/>
-    <result property="mpw" column="mpw"/>
+    <id property="memberId" column="memberId"/>
+    <result property="memberName" column="memberName"/>
+    <result property="memberPw" column="memberPw"/>
     <collection property="rolenames" resultMap="authMap" />
   </resultMap>
 
@@ -18,13 +22,9 @@
 
   <select id="selectOne" resultMap="memberMap">
     select * 
-    from tbl_member tm inner join tbl_member_role tmr on tmr.email = tm.email 
-    where tm.email =#{email}
+    from tbl_member tm inner join tbl_member_role tmr on tmr.memberId = tm.memberId 
+    where tm.memberId =#{memberId}
   </select>
 
-  <select id="time">
 
-    select now()
-
-  </select>
 </mapper>
