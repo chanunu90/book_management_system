@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("Is Running LoadUserByUserName");
         log.info(username);
 
-        MemberReadDTO memberReadDTO = memberMapper.selectOne(username);
+        MemberReadDTO memberReadDTO = memberMapper.getMamber(username);
         log.info("readDTO", memberReadDTO);
 
         MemberDTO memberDTO = new MemberDTO(username,

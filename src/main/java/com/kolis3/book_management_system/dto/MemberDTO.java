@@ -12,18 +12,19 @@ import lombok.Data;
 @Data
 public class MemberDTO extends User{
 
-    private String email;
+
+    private String memberEmail;
     private String memberName;
     private String memberPw;
     private List<String> roleNames = new ArrayList<>();
 
-    public MemberDTO(String email, String memberPw, String memberName, List<String> roleNames) {
+    public MemberDTO(String memberEmail, String memberPw, String memberName, List<String> roleNames) {
 
         // super(email,mpw, List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        super(email, memberPw,
+        super(memberEmail, memberPw,
                 roleNames.stream().map(str -> new SimpleGrantedAuthority("ROLE_" + str)).collect(Collectors.toList()));
         this.memberName = memberName;
-        this.email = email;
+        this.memberEmail = memberEmail;
         this.memberPw = memberPw;
         this.roleNames = roleNames;
     }

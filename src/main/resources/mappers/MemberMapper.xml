@@ -20,10 +20,10 @@
     <result column="rolename"/>
   </resultMap>
 
-  <select id="selectOne" resultMap="memberMap">
+  <select id="getMamber" resultMap="memberMap">
     select * 
     from tbl_member tm inner join tbl_member_role tmr on tmr.memberId = tm.memberId 
-    where tm.memberId =#{memberId}
+    where tm.memberEmail =#{memberEmail}
   </select>
 
 

@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class MemberReadDTO {
 
-    private String memberId;
+    private String memberEmail;
 
     private String memberPw;
 

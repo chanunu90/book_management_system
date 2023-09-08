@@ -1,13 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
+
+    [[${pageRequestDTO}]]
     
-    도서관리 프로그램 메인 리스트화면
+    <h1>도서관리 프로그램 메인 리스트화면</h1>
+
+
+
+
+
+    <div style="cursor: pointer; float: left;">
+      <a href="/portfolio/register">글쓰기</a>
+    </div>
+    <ul class="todoUL" style="display: flex; justify-content: space-between; width: 300px; list-style: none; margin: 0 auto;">
+      <li class="page-item"><a class="page-link" href="10">&laquo;</a></li>
+      <li class="page-item"><a class="page-link" href="11">11</a></li>
+      <li class="page-item"><a class="page-link" href="12">12</a></li>
+      <li class="page-item"><a class="page-link" href="13">13</a></li>
+      <li class="page-item"><a class="page-link" href="21">&raquo;</a></li>
+    </ul>
+
+    <!-- //페이징 작업 -->
+    <form class="actionForm" action="" method="get">
+        <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
+    </form>
+    <script src="/js/pageUtil.js"></script>
 
 </body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const actionForm = document.querySelector(".actionForm")
+    const pageObj = actionForm.querySelector("input[name='page']")
+    const todoUL = document.querySelector(".todoUL")
+
+    todoUL.addEventListener("click", (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const target = e.target
+      const pageNum = target.getAttribute("href") === null ? 0 : target.getAttribute("href")
+      if(pageNum === 0) return 
+
+      pageObj.value = pageNum
+      actionForm.setAttribute("action", `/book/bookList`)
+      actionForm.submit()
+
+    }, false)
+
+    const {page,size} = [[${pageRequestDTO}]]
+
+    console.log(page,size)
+
+    //페이징 유틸로 빼둠
+    const pageLIStr = makePages(page,size, 101)
+    todoUL.innerHTML = pageLIStr
+
+
+</script>
+
 </html>
