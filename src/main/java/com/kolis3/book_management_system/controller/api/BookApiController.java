@@ -1,5 +1,7 @@
 package com.kolis3.book_management_system.controller.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +26,23 @@ public class BookApiController {
     private BookService bookService;
 
     @GetMapping("bookList")
-    public PageResponseDTO<BookDTO> booklist(PageRequestDTO pageRequestDTO){
+    public PageResponseDTO<BookDTO> bookList(PageRequestDTO pageRequestDTO){
 
-        PageResponseDTO<BookDTO> booklist = bookService.getBookList();
-        log.info("booklist---------------");
-        log.info(booklist);
+        //책리스트
+        List<BookDTO> list = bookService.getBookList(pageRequestDTO);
 
-        return booklist;
+        //책총수
+        Long total = bookService.getListCount(pageRequestDTO);
+
+        log.info("bookList---------------");
+        log.info(list);
+
+        return PageResponseDTO.<BookDTO>withAll()
+        .list(list)
+        .total(total)
+        .pageRequestDTO(pageRequestDTO)
+        .build();
+
     }
     
 

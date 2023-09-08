@@ -11,13 +11,43 @@
     [[${pageRequestDTO}]]
     
     <h1>도서관리 프로그램 메인 리스트화면</h1>
+    <hr>
+
+    <table>
+        <tbody>
+            <tr class = "bookList">
+                <td>리스트 들어갈자리</td>
+            </tr>
+        </tbody>
+    </table>
 
 
 
+    <!-- 책 등록 모달 -->
+    <div class="modal registerModal" tabindex="-1" role="dialog" style="border: 3px solid black; display: none;">
+      <form action="경로들어갈자리" method="post" enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              도서 입력
+            </div>
+            <div class="modal-body bookRegister">
+              <input type="text" name="bookName" value="" placeholder="책제목">
+              <input type="text" name="author" value="" placeholder="저자">
+              <input type="text" name="publishing" value="" placeholder="출판사">
+              <input type="text" name="plot" value="" placeholder="줄거리">
+              <input type="file" name="files" multiple>
+            </div>
+            <button class="btnRegister" type="submit">책 입력</button>
+            <button class="btn-close" >Close</button>
+          </div>
+        </div>
+      </form>  
+    </div>
 
 
     <div style="cursor: pointer; float: left;">
-      <a href="/portfolio/register">글쓰기</a>
+      <h2 class="registerBtn">책 입력</h2>
     </div>
     <ul class="todoUL" style="display: flex; justify-content: space-between; width: 300px; list-style: none; margin: 0 auto;">
       <li class="page-item"><a class="page-link" href="10">&laquo;</a></li>
@@ -31,6 +61,7 @@
     <form class="actionForm" action="" method="get">
         <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/pageUtil.js"></script>
 
 </body>
@@ -40,7 +71,18 @@
     const actionForm = document.querySelector(".actionForm")
     const pageObj = actionForm.querySelector("input[name='page']")
     const todoUL = document.querySelector(".todoUL")
+    const bookList = document.querySelector(".bookList")
+    const registerBtn = document.querySelector(".registerBtn")
+    const registerModal = document.querySelector(".registerModal")
 
+    registerBtn.addEventListener("click" , (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      registerModal.style.display = "block";
+
+    })
+   
     todoUL.addEventListener("click", (e) => {
       e.preventDefault()
       e.stopPropagation()
@@ -62,6 +104,16 @@
     //페이징 유틸로 빼둠
     const pageLIStr = makePages(page,size, 101)
     todoUL.innerHTML = pageLIStr
+
+    //모달 숨기기
+    document.querySelector(".btn-close").addEventListener("click" , (e) => {
+      
+      registerModal.style.display = "none";
+      
+    })
+
+
+    // 비동기로 리스트 호출해서 가지고온다음 뿌려준다.
 
 
 </script>
