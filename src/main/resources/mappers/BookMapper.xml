@@ -23,13 +23,16 @@
   <select id="getListCount" resultType="long">
     select count(*) 
     from 
-    (select tno from tbl_book tb
+    (select bno from tbl_book tb
     <where> 
       tb.bno > 0 
     </where>
     limit #{countEnd}
     ) book
   </select>
+
+
+  
 
 
 </mapper>

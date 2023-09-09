@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,9 @@ public class BookApiController {
     @GetMapping("bookList")
     public PageResponseDTO<BookDTO> bookList(PageRequestDTO pageRequestDTO){
 
+
+        log.info("bookList--------API-------");
+
         //책리스트
         List<BookDTO> list = bookService.getBookList(pageRequestDTO);
 
@@ -42,6 +46,16 @@ public class BookApiController {
         .total(total)
         .pageRequestDTO(pageRequestDTO)
         .build();
+
+    }
+
+    //책 입력 부터 시작하면 됨
+
+    @PostMapping("")
+    public void addBook(BookDTO bookDTO){
+
+
+
 
     }
     

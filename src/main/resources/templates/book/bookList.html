@@ -13,12 +13,10 @@
     <h1>도서관리 프로그램 메인 리스트화면</h1>
     <hr>
 
-    <table>
-        <tbody>
-            <tr class = "bookList">
-                <td>리스트 들어갈자리</td>
-            </tr>
-        </tbody>
+    <table class="bookList" style="border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td style="border: 5px solid black;">리스트 들어갈 자리</td>
+        </tr>
     </table>
 
 
@@ -39,7 +37,7 @@
               <input type="file" name="files" multiple>
             </div>
             <button class="btnRegister" type="submit">책 입력</button>
-            <button class="btn-close" >Close</button>
+            <button class="btn-close">Close</button>
           </div>
         </div>
       </form>  
@@ -61,6 +59,7 @@
     <form class="actionForm" action="" method="get">
         <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
     </form>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/pageUtil.js"></script>
 
@@ -74,6 +73,9 @@
     const bookList = document.querySelector(".bookList")
     const registerBtn = document.querySelector(".registerBtn")
     const registerModal = document.querySelector(".registerModal")
+
+    const btnRegister = document.querySelector(".btnRegister")
+    
 
     registerBtn.addEventListener("click" , (e) => {
       e.preventDefault()
@@ -107,6 +109,9 @@
 
     //모달 숨기기
     document.querySelector(".btn-close").addEventListener("click" , (e) => {
+
+      e.preventDefault()
+      e.stopPropagation()
       
       registerModal.style.display = "none";
       
@@ -114,6 +119,116 @@
 
 
     // 비동기로 리스트 호출해서 가지고온다음 뿌려준다.
+    const getBookList = async (page = 1) => {
+
+      // const header = {
+      //       headers: {
+      //               "Content-Type": "multipart/form-data",
+      //       }
+      // }
+      
+      const res = await axios.get(`http://localhost:8080/api/bookList?page=${page}`)
+      console.log(res.data)
+
+      return res.data
+
+    } 
+
+    function loadListData (pageNum) {
+
+      getBookList(pageNum).then(data => {
+      console.log("then result---------------")
+
+      //페이징 3가지
+      const total = data.total;
+      const page = pageNum
+      const size = 10;
+
+      const pageLIStr = makePages(page, size, total)
+      todoUL.innerHTML = pageLIStr
+
+      let str = ""
+
+      if(!data){
+          return
+      }
+
+      for(let i = 0; i < data.list.length; i++){
+       
+          const {bno,bookName,author,publishing,plot,regDate} = data.list[i]
+          str +=     
+          `
+          <tr>
+              <td style="border: 2px solid black; padding:5px">${bookName} / ${author}</td>
+              <td style="border: 2px solid black; padding:5px" class="ReadBtn" data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>자세히보기</td>
+              <td style="border: 2px solid black; padding:5px">${regDate}</td>
+              <td style="float-right">수정하기</td>
+              <td style="float-right">삭제하기</td>
+          </tr>
+
+          `
+      }
+
+      bookList.innerHTML = str
+
+
+      }).catch(e => {
+
+        alert("목록을 가지고오지 못함")
+        
+      })
+
+    }
+    loadListData(1)
+
+
+    //입력 api
+    const setBook = async (params) => {
+
+      const header = {
+            headers: {
+                    "Content-Type": "multipart/form-data",
+            }
+      }
+      
+      const res = await axios.get(`http://localhost:8080/api/bookList?page=${page}` , params , header)
+      console.log(res.data)
+
+      return res.data
+
+    } 
+
+    //입력
+    btnRegister.addEventListener( (e) => {
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      const params = {
+
+        "bookName"    : registerModal.querySelector("input[name='bookName']").value,
+        "author"      : registerModal.querySelector("input[name='author']").value,
+        "publishing"  : registerModal.querySelector("input[name='publishing']").value,
+        "plot"        : registerModal.querySelector("input[name='plot']").value,
+        "files"        : registerModal.querySelector("input[name='files']").value,
+
+      }
+
+      setBook(params).then(data => {
+
+        loadListData(1)
+
+      }).catch(e => {
+
+        alert("등록 실패")
+
+      })
+
+
+      //등록 완료시 모달 닫기
+      registerModal.style.display = "none";
+
+    })
 
 
 </script>
