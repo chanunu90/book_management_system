@@ -16,6 +16,8 @@
     <table class="bookList" style="border-collapse: collapse; border: 1px solid black;">
         <tr>
             <td style="border: 5px solid black;">리스트 들어갈 자리</td>
+            <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="rentingBtn">대여하기</td>
+            <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="cancellationBtn">대여취소</td>
         </tr>
     </table>
 
@@ -36,8 +38,8 @@
               <input type="text" name="plot" value="" placeholder="줄거리">
               <input type="file" name="files" multiple>
             </div>
-            <button class="btnRegister" type="submit">책 입력</button>
-            <button class="btn-close">Close</button>
+            <div class="btnRegister" >책 입력</div>
+            <div class="btn-close">Close</div>
           </div>
         </div>
       </form>  
@@ -75,7 +77,38 @@
     const registerModal = document.querySelector(".registerModal")
 
     const btnRegister = document.querySelector(".btnRegister")
-    
+
+    const rentingBtn = document.querySelector(".rentingBtn")
+    const cancellationBtn = document.querySelector(".cancellationBtn")
+
+    //대여하기
+    bookList.addEventListener("click" , (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const target = e.target
+      alert(target.getAttribute("data-btn"))
+
+      //대여버튼
+      if(target.getAttribute("data-btn") === "renting"){
+
+
+
+
+      //대여취소버튼
+      }else if(target.getAttribute("data-btn") === "cancellation"){
+
+        
+
+
+      }
+
+      
+      
+    })
+
+
+
 
     registerBtn.addEventListener("click" , (e) => {
       e.preventDefault()
@@ -159,11 +192,11 @@
           str +=     
           `
           <tr>
-              <td style="border: 2px solid black; padding:5px">${bookName} / ${author}</td>
-              <td style="border: 2px solid black; padding:5px" class="ReadBtn" data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>자세히보기</td>
+              <td style="border: 2px solid black; padding:5px">${bookName}</td>
+              <td style="border: 2px solid black; padding:5px">${author}</td>
               <td style="border: 2px solid black; padding:5px">${regDate}</td>
-              <td style="float-right">수정하기</td>
-              <td style="float-right">삭제하기</td>
+              <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="rentingBtn"      data-btn=renting  data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>대여하기</td>
+              <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="cancellationBtn" data-btn=cancellation  data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>대여취소</td>
           </tr>
 
           `
@@ -191,7 +224,7 @@
             }
       }
       
-      const res = await axios.get(`http://localhost:8080/api/bookList?page=${page}` , params , header)
+      const res = await axios.post(`http://localhost:8080/api` , params , header)
       console.log(res.data)
 
       return res.data
@@ -199,22 +232,24 @@
     } 
 
     //입력
-    btnRegister.addEventListener( (e) => {
+    btnRegister.addEventListener("click" , (e) => {
 
       e.preventDefault()
       e.stopPropagation()
 
-      const params = {
+      const formData = new FormData();
+      formData.append("bookName", registerModal.querySelector("input[name='bookName']").value);
+      formData.append("author", registerModal.querySelector("input[name='author']").value);
+      formData.append("publishing", registerModal.querySelector("input[name='publishing']").value);
+      formData.append("plot", registerModal.querySelector("input[name='plot']").value);
 
-        "bookName"    : registerModal.querySelector("input[name='bookName']").value,
-        "author"      : registerModal.querySelector("input[name='author']").value,
-        "publishing"  : registerModal.querySelector("input[name='publishing']").value,
-        "plot"        : registerModal.querySelector("input[name='plot']").value,
-        "files"        : registerModal.querySelector("input[name='files']").value,
-
+      const fileInput = registerModal.querySelector("input[name='files']");
+      const files = fileInput.files; // 선택한 파일 목록 가져오기
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]); // 선택한 파일을 FormData에 추가
       }
 
-      setBook(params).then(data => {
+      setBook(formData).then(data => {
 
         loadListData(1)
 

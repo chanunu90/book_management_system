@@ -15,4 +15,6 @@ public interface BookService {
 
     Long getListCount(PageRequestDTO pageRequestDTO);
     
+    Long setBook(BookDTO bookDTO);
+    
 }

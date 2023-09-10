@@ -20,13 +20,13 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class BookApiController {
     
     @Autowired
     private BookService bookService;
 
-    @GetMapping("bookList")
+    @GetMapping("/bookList")
     public PageResponseDTO<BookDTO> bookList(PageRequestDTO pageRequestDTO){
 
 
@@ -50,11 +50,14 @@ public class BookApiController {
     }
 
     //책 입력 부터 시작하면 됨
-
+    //이미지 들고와야한다.
     @PostMapping("")
     public void addBook(BookDTO bookDTO){
+        log.info("bookDTO-------------------------------------");
+        log.info(bookDTO);
 
 
+        bookService.setBook(bookDTO);
 
 
     }

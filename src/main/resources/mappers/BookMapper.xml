@@ -11,12 +11,13 @@
 
 
   <select id="getBookList" resultType="com.kolis3.book_management_system.dto.BookDTO">
-    select * 
-    from tbl_book
-    <where>
-        bno > 0
-    </where>
-    limit #{skip} , #{size}
+    select bno ,  bookName , author , publishing ,plot ,bi.images ,regDate ,updateDate ,  min(ord)
+    from tbl_book tb left outer join tbl_book_image bi
+    on tb.bno = bi.image_bno
+    where bno > 0
+    group by bno , bookName , author , publishing ,plot ,regDate ,updateDate, bi.images
+    order by bno desc
+    limit #{skip}, #{size}
   </select>
 
 
@@ -31,8 +32,17 @@
     ) book
   </select>
 
+  <insert id="setBook">
+      INSERT INTO tbl_book (bookName, author, publishing , plot)
+      VALUES (#{bookName}, #{author}, #{publishing}, #{plot})
+      <selectKey keyProperty="bno" resultType="java.lang.Long" order="AFTER">
+          SELECT LAST_INSERT_ID() AS bno
+      </selectKey>
+  </insert>
 
+  <insert id="setBookImage">
+      insert into tbl_book_image (image_bno, images , ord)
+      values (#{image_bno} , #{image} , #{ord})
+  </insert>
   
-
-
 </mapper>

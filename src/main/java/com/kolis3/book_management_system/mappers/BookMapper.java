@@ -3,6 +3,7 @@ package com.kolis3.book_management_system.mappers;
 import java.util.List;
 
 import com.kolis3.book_management_system.dto.BookDTO;
+import com.kolis3.book_management_system.dto.BookImageDTO;
 import com.kolis3.book_management_system.dto.PageRequestDTO;
 
 public interface BookMapper {
@@ -11,7 +12,9 @@ public interface BookMapper {
 
     Long getListCount(PageRequestDTO pageRequestDTO);
 
-    Long addBook(BookDTO BookDTO);
+    Long setBook(BookDTO BookDTO);
+
+    void setBookImage(BookImageDTO imageDTO);
 
     Long updateBook(BookDTO BookDTO);
     
