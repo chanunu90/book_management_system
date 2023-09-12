@@ -11,11 +11,11 @@
 
 
   <select id="getBookList" resultType="com.kolis3.book_management_system.dto.BookDTO">
-    select bno ,  bookName , author , publishing ,plot ,bi.images ,regDate ,updateDate ,  min(ord)
-    from tbl_book tb left outer join tbl_book_image bi
-    on tb.bno = bi.image_bno
-    where bno > 0
-    group by bno , bookName , author , publishing ,plot ,regDate ,updateDate, bi.images
+	  select tb.bno ,  bookName , author , publishing ,plot ,bi.images as image ,tb.regDate ,tb.updateDate ,  min(ord) as ord , max(bo.orderYn) as orderYn , bo.mno
+    from tbl_book tb left outer join tbl_book_image bi 
+    on tb.bno = bi.image_bno left join tbl_book_order bo on tb.bno = bo.bno
+    where tb.bno > 0
+    group by tb.bno , bookName , author , publishing ,plot ,tb.regDate ,tb.updateDate, bi.images , bo.mno
     order by bno desc
     limit #{skip}, #{size}
   </select>
@@ -44,5 +44,18 @@
       insert into tbl_book_image (image_bno, images , ord)
       values (#{image_bno} , #{image} , #{ord})
   </insert>
+
+
+  <insert id="rentingBook">
+    insert tbl_book_order (bno , mno , orderYn) 
+    values ( #{bno} , #{mno} , true);
+  </insert> 
+
+  <update id="returnBook">
+    update tbl_book_order
+    set orderYn = false , updateDate = now()
+    where bno = #{bno}
+  </update>
+
   
 </mapper>

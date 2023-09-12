@@ -9,5 +9,11 @@ public interface MemberService {
     
     MemberReadDTO getMember(String memberEmail);
 
+    void setMember(MemberReadDTO memberReadDTO);
+
+    
+
+
+
 
 }

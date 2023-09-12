@@ -15,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class MemberReadDTO {
 
+    private Long mno;
+
     private String memberEmail;
 
     private String memberPw;
@@ -26,6 +28,7 @@ public class MemberReadDTO {
     private String memberTel;
 
     private List<String> rolenames;
+    private String roleName;
 
 
 

@@ -52,6 +52,7 @@ public class SecurityConfig{
 
     log.info("로그인 페이지 띄우기----------------");
 
+    
     // 권한 체크
     http.exceptionHandling(
       config -> config.accessDeniedHandler(new CustomAccessDeniedHandler())

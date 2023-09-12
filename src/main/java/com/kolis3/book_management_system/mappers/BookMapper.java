@@ -2,6 +2,8 @@ package com.kolis3.book_management_system.mappers;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kolis3.book_management_system.dto.BookDTO;
 import com.kolis3.book_management_system.dto.BookImageDTO;
 import com.kolis3.book_management_system.dto.PageRequestDTO;
@@ -16,8 +18,8 @@ public interface BookMapper {
 
     void setBookImage(BookImageDTO imageDTO);
 
-    Long updateBook(BookDTO BookDTO);
-    
-    Long deleteBook(BookDTO BookDTO);
+    void rentingBook(@Param("bno") Long bno, @Param("mno") Long mno);
+
+    void returnBook(@Param("bno") Long bno);
     
 }

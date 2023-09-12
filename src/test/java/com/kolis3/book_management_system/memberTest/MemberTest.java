@@ -22,4 +22,11 @@ public class MemberTest {
 
 	}
 
+    @Test
+	public void getMember() {
+
+        log.info(memberMapper.getMamber("user@user.com"));
+
+	}
+
 }

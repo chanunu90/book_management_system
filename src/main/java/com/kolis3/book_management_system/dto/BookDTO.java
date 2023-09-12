@@ -32,6 +32,9 @@ public class BookDTO {
 
     private LocalDateTime regDate;
 
+    private String orderYn;
+    private Long mno;
+    private String image;
 
     @Builder.Default
     private List<String> images = new ArrayList<>();

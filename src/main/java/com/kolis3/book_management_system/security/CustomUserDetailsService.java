@@ -26,10 +26,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Is Running LoadUserByUserName");
-        log.info(username);
+        log.info("username"+ username);
+        //추후 연구가 필요
+        username = "user@user.com";
+        log.info("username"+ username);
 
         MemberReadDTO memberReadDTO = memberMapper.getMamber(username);
-        log.info("readDTO", memberReadDTO);
+        log.info("readDTO"+ memberReadDTO);
 
         MemberDTO memberDTO = new MemberDTO(username,
                 memberReadDTO.getMemberPw(),

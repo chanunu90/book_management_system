@@ -28,6 +28,7 @@ public class BookController {
 
     //책 리스트 페이지
     @PreAuthorize("permitAll")
+    // @PreAuthorize("hasAnyRole('ROLE_USER')")
     @GetMapping("/bookList")
         public void bookList(PageRequestDTO pageRequestDTO , Model model){
         log.info("bookListPage----------");

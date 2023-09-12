@@ -120,7 +120,19 @@ public class BookServiceImpl implements BookService{
         
         return tno;
 
+    }
 
+    @Override
+    public void rentingBook(Long bno,Long mno) {
+
+        bookMapper.rentingBook(bno,mno);
+
+    }
+
+    @Override
+    public void returnBook(Long bno) {
+
+        bookMapper.returnBook(bno);
 
     }
     

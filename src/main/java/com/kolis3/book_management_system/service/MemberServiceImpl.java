@@ -22,6 +22,13 @@ public class MemberServiceImpl implements MemberService{
 
     }
 
+    @Override
+    public void setMember(MemberReadDTO memberReadDTO) {
+        
+        memberMapper.setMember(memberReadDTO);
+
+    }
+
 
 
 

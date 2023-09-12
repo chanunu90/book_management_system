@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kolis3.book_management_system.dto.BookDTO;
 import com.kolis3.book_management_system.dto.PageRequestDTO;
-import com.kolis3.book_management_system.dto.PageResponseDTO;
 
 @Transactional
 public interface BookService {
@@ -16,5 +15,9 @@ public interface BookService {
     Long getListCount(PageRequestDTO pageRequestDTO);
     
     Long setBook(BookDTO bookDTO);
+
+    void rentingBook(Long bno, Long mno);
+
+    void returnBook(Long bno);
     
 }

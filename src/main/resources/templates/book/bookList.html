@@ -7,8 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-
-    [[${pageRequestDTO}]]
     
     <h1>도서관리 프로그램 메인 리스트화면</h1>
     <hr>
@@ -49,7 +47,7 @@
     <div style="cursor: pointer; float: left;">
       <h2 class="registerBtn">책 입력</h2>
     </div>
-    <ul class="todoUL" style="display: flex; justify-content: space-between; width: 300px; list-style: none; margin: 0 auto;">
+    <ul class="todoUL" style="display: flex; justify-content: space-between; width: 50px; list-style: none; margin: 0 auto;">
       <li class="page-item"><a class="page-link" href="10">&laquo;</a></li>
       <li class="page-item"><a class="page-link" href="11">11</a></li>
       <li class="page-item"><a class="page-link" href="12">12</a></li>
@@ -87,26 +85,64 @@
       e.stopPropagation()
 
       const target = e.target
-      alert(target.getAttribute("data-btn"))
 
       //대여버튼
       if(target.getAttribute("data-btn") === "renting"){
 
+        
+        rentingBook(target.getAttribute("data-bno")).then(data => {
 
+          loadListData(1)
 
+        }).catch(e => {
+
+          alert("등록 실패")
+
+        })
 
       //대여취소버튼
       }else if(target.getAttribute("data-btn") === "cancellation"){
 
-        
 
+        returnBook(target.getAttribute("data-bno")).then(data => {
+
+          loadListData(1)
+
+        }).catch(e => {
+
+          alert("등록 실패")
+
+        })
 
       }
-
-      
       
     })
 
+    // 대여하기
+    const rentingBook = async (bno) => {
+
+      const param = {
+
+        "bno" : bno
+
+      }
+
+      const res = await axios.put(`http://localhost:8080/api/2` , param)
+      console.log(res.data)
+
+      return res.data
+
+    } 
+
+    // 반납하기
+    const returnBook = async (bno) => {
+
+      const res = await axios.delete(`http://localhost:8080/api/${bno}`)
+      console.log(res.data)
+
+      return res.data
+
+    } 
 
 
 
@@ -188,15 +224,22 @@
 
       for(let i = 0; i < data.list.length; i++){
        
-          const {bno,bookName,author,publishing,plot,regDate} = data.list[i]
+          const {bno,bookName,author,publishing,plot,regDate,orderYn,mno,image} = data.list[i]
+
+          const buttonHtml = orderYn !== null ? orderYn === "0" ?
+          `<td style="border: 2px solid black; padding:5px; cursor: pointer;" class="rentingBtn" data-btn="renting" data-bno="${bno}" data-reply="${bookName}" data-replyer="${author}">대여하기</td>` :
+          `<td style="border: 2px solid black; padding:5px; cursor: pointer;" class="cancellationBtn" data-btn="cancellation" data-bno="${bno}" data-reply="${bookName}" data-replyer="${author}">대여취소</td>`
+          : `<td style="border: 2px solid black; padding:5px; cursor: pointer;" class="rentingBtn" data-btn="renting" data-bno="${bno}" data-reply="${bookName}" data-replyer="${author}">대여하기</td>`;
           str +=     
           `
           <tr>
+            <td style="border: 2px solid black; padding:5px">${orderYn !== null ? orderYn === "0" ? "대여가능" : "대여중" : "대여가능"}</td>
+            <td style="border: 2px solid black; padding:5px"><img src="..\\outputs\\s_${image}" alt="이미지 설명"></img></td>
+            
               <td style="border: 2px solid black; padding:5px">${bookName}</td>
               <td style="border: 2px solid black; padding:5px">${author}</td>
               <td style="border: 2px solid black; padding:5px">${regDate}</td>
-              <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="rentingBtn"      data-btn=renting  data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>대여하기</td>
-              <td style="border: 2px solid black; padding:5px; cursor: pointer;" class="cancellationBtn" data-btn=cancellation  data-bno= ${bno} data-reply= ${bookName} data-replyer= ${author}>대여취소</td>
+              ${buttonHtml}
           </tr>
 
           `
@@ -212,7 +255,7 @@
       })
 
     }
-    loadListData(1)
+    loadListData(page)
 
 
     //입력 api

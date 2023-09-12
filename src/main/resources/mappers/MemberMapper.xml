@@ -10,21 +10,30 @@
   </select>
 
   <resultMap id="memberMap" type="com.kolis3.book_management_system.dto.MemberReadDTO">
-    <id property="memberId" column="memberId"/>
+    <id property="mno" column="mno"/>
+    <result property="memberEmail" column="memberEmail"/>
     <result property="memberName" column="memberName"/>
     <result property="memberPw" column="memberPw"/>
     <collection property="rolenames" resultMap="authMap" />
   </resultMap>
 
   <resultMap type="string" id="authMap">
-    <result column="rolename"/>
+    <result column="roleName"/>
   </resultMap>
 
   <select id="getMamber" resultMap="memberMap">
+  <!-- <select id="getMamber"> -->
     select * 
-    from tbl_member tm inner join tbl_member_role tmr on tmr.memberId = tm.memberId 
-    where tm.memberEmail =#{memberEmail}
+    from tbl_member
+    where memberEmail = #{memberEmail}
   </select>
+
+
+  <insert id="setMember">
+    INSERT INTO tbl_member
+    (memberEmail,memberPw,memberName,roleName)
+    VALUES(#{memberEmail}, #{memberPw}, #{memberName}, #{roleName})
+  </insert>
 
 
 </mapper>

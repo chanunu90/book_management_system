@@ -23,5 +23,11 @@ public interface MemberMapper {
     int insertMemberRole(
       @Param("email") String email,
       @Param("rolename") String rolename
-    );   
+    );
+
+    int setMember(MemberReadDTO memberReadDTO);
+
+
+    
+
 }
