@@ -62,11 +62,11 @@ public class MemberController {
         log.info(memberReadDTO);
 
         List<String> role = new ArrayList<>();
-        role.add(0, "ROLE_USER");
+        role.add(0, "USER");
         //암호화해서 다시 넣어줌
         memberReadDTO.setMemberPw(passwordEncoder.encode(memberReadDTO.getMemberPw()));
         memberReadDTO.setRolenames(role);
-        memberReadDTO.setRoleName("ROLE_USER");
+        memberReadDTO.setRoleName("USER");
 
         log.info(memberReadDTO);
 
