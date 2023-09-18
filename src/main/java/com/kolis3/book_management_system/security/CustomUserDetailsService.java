@@ -28,8 +28,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("Is Running LoadUserByUserName");
         log.info("username"+ username);
         //추후 연구가 필요
-        username = "user@user.com";
-        log.info("username"+ username);
+        // username = "user@user.com";
+        // log.info("username"+ username);
 
         MemberReadDTO memberReadDTO = memberMapper.getMamber(username);
         log.info("readDTO"+ memberReadDTO);
